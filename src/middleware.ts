@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { type Session } from "next-auth";
 
 export default async function middleware(request:NextRequest){
   const result = await fetch(`${process.env.NEXTAUTH_URL || request.nextUrl.origin}/api/auth/session`, {
@@ -7,7 +8,7 @@ export default async function middleware(request:NextRequest){
     }
   })
 
-  const session = await result.json();
+  const session:Session = await result.json();
   const {pathname} = request.nextUrl;
 
   if (pathname.startsWith("/app")){
