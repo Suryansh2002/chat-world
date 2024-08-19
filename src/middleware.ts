@@ -1,0 +1,33 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export default async function middleware(request:NextRequest){
+  const result = await fetch(`${process.env.NEXTAUTH_URL || request.nextUrl.origin}/api/auth/session`, {
+    headers: {
+      cookie: request.headers.get("cookie") || ""
+    }
+  })
+
+  const session = await result.json();
+  const {pathname} = request.nextUrl;
+
+  if (pathname.startsWith("/app")){
+    if (!session){
+      request.nextUrl.pathname = "/"
+      return NextResponse.redirect(request.nextUrl);
+    }
+    if (!session?.dbUser){
+      request.nextUrl.pathname = "/signup"
+      return NextResponse.redirect(request.nextUrl);
+    }
+  }
+  else if (pathname.startsWith("/signup")){
+    if (session?.dbUser){
+        request.nextUrl.pathname = "/"
+        return NextResponse.redirect(request.nextUrl);
+    }
+  }
+}
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+};
