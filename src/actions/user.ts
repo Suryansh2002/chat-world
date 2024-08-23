@@ -1,10 +1,9 @@
 "use server";
 import { authActionClient } from "@/lib/safe-action";
 import { redirect } from "next/navigation";
-import {z} from "zod";
-import {zfd} from "zod-form-data";
-import { db } from "@/db";
-import { user } from "@/db/schema";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
+import { db, user } from "@/db";
 
 const createUserSchema = zfd.formData({
     userName: zfd.text(z.string().min(5).max(20)),
@@ -16,7 +15,7 @@ export const createUser = authActionClient
     .schema(createUserSchema)
     .action(async({parsedInput:{userName,displayName,gender}, ctx:{session}})=>{
         if (session.dbUser){
-            redirect("/app");
+            redirect("/app/friends");
         }
         if (await db.query.user.findFirst({where:(user,{eq})=>eq(user.userName,userName)})){
             throw new Error("Username already exists");

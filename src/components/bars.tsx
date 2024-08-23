@@ -29,13 +29,13 @@ export function Sidebar() {
 
 
 export function ButtonBar() {
-    return <div className="fixed bottom-3 left-1/2 -translate-x-1/2 h-16 w-[96%] bg-neutral-900 rounded-2xl">
+    return <div className="h-16 w-[100%] bg-neutral-800 flex items-center justify-center rounded-lg">
         <Links/>
     </div>
 }
 
 
-export default function Bar() {
+export  function Bar() {
     return <>
         <div className="hidden md:block">
             <Sidebar/>

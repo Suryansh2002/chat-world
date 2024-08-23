@@ -10,13 +10,13 @@ export const user = pgTable("user",{
     userName: text("userName").notNull().unique(),
     email: text("email").notNull(),
     gender: genderEnum("gender").notNull(),
-    imageUrl : text("imageUrl"),
+    imageUrl : text("imageUrl").notNull().default(""),
     imageIsSet: boolean("imageIsSet").notNull().default(false),
 })
 
 export const friendship = pgTable("friendship",{
-    sender: text("sender").notNull().references(()=>user.userName),
-    receiver: text("receiver").notNull().references(()=>user.userName),
+    sender: uuid("sender").notNull().references(()=>user.id),
+    receiver: uuid("receiver").notNull().references(()=>user.id),
     status: friendshipStatus("status").notNull().default("pending"),
 }, (table)=>{
     return {

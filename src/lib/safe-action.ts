@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { createSafeActionClient, } from "next-safe-action";
+import { createSafeActionClient } from "next-safe-action";
 import { redirect } from "next/navigation";
 
 export const actionClient = createSafeActionClient({
