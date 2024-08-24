@@ -6,7 +6,7 @@ import { zfd } from "zod-form-data";
 import { db, user } from "@/db";
 
 const createUserSchema = zfd.formData({
-    userName: zfd.text(z.string().min(5).max(20)),
+    userName: zfd.text(z.string().min(5).max(20).regex(/^[a-z_]+$/, "Username must contain only lowercase letters and underscores")),
     displayName: zfd.text(z.string().min(5).max(20)),
     gender: zfd.text(z.enum(["male","female","other"])),
 });
@@ -30,4 +30,4 @@ export const createUser = authActionClient
             gender: gender
         })
         redirect("/");
-    })
+    });

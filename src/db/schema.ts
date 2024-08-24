@@ -1,7 +1,7 @@
 import { pgTable, uuid, text, boolean, pgEnum, index} from "drizzle-orm/pg-core";
 
 
-export const friendshipStatus = pgEnum("friendshipStatus",["pending","accepted","blocked"])
+export const friendshipStatus = pgEnum("friendshipStatus",["pending","accepted","blocked","none"])
 export const genderEnum = pgEnum("gender",["male","female","other"])
 
 export const user = pgTable("user",{
@@ -15,15 +15,25 @@ export const user = pgTable("user",{
 })
 
 export const friendship = pgTable("friendship",{
+    channelId: uuid("channelId").defaultRandom().primaryKey(),
     sender: uuid("sender").notNull().references(()=>user.id),
     receiver: uuid("receiver").notNull().references(()=>user.id),
     status: friendshipStatus("status").notNull().default("pending"),
 }, (table)=>{
     return {
-        senderIndex: index("senderIndex").on(table.sender),
-        receiverIndex: index("receiverIndex").on(table.receiver),
+        senderIndex: index("senderIndex").on(table.sender, table.status),
+        receiverIndex: index("receiverIndex").on(table.receiver, table.status),
     }
 })
 
+export const messages = pgTable("messages",{
+    id: uuid("id").defaultRandom().primaryKey(),
+    channelId: uuid("channelId").notNull(),
+    sender: uuid("sender").notNull().references(()=>user.id),
+    message: text("message").notNull(),
+})
+
+
 export type User = typeof user.$inferSelect;
 export type Friendship = typeof friendship.$inferSelect;
+export type Messages = typeof messages.$inferSelect;
