@@ -16,7 +16,6 @@ export default async function Page(){
         <section className="flex items-center justify-center flex-col">
             <h1 className="text-6xl mt-32">Features</h1>
         </section>
-
         <MainFooter />
     </div>
 }

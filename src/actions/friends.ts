@@ -203,3 +203,28 @@ export const cancelRequest = authActionClient
         await db.update(friendship).set({"status":"none"}).where(eq(friendship.channelId, relation.channelId));
         return 'Request Cancelled !';
     })
+
+export const fetchChannelId = authActionClient
+    .schema(z.object({friendId:z.string()}))
+    .action(async({parsedInput:{friendId}, ctx:{session}})=>{
+        if (!session.dbUser){
+            redirect("/signup");
+        }
+        const userId = session.dbUser.id;
+        const channelId = await db.query.friendship.findFirst({
+            columns: {channelId: true},
+            where: or(
+                and(
+                    eq(friendship.sender, userId),
+                    eq(friendship.receiver, friendId),
+                    eq(friendship.status, "accepted")
+                ),
+                and(
+                    eq(friendship.sender, friendId),
+                    eq(friendship.receiver, userId),
+                    eq(friendship.status, "accepted")
+                )
+            )
+        })
+        return channelId?.channelId;
+})

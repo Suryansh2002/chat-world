@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, pgEnum, index} from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, boolean, pgEnum, index, timestamp, time} from "drizzle-orm/pg-core";
 
 
 export const friendshipStatus = pgEnum("friendshipStatus",["pending","accepted","blocked","none"])
@@ -31,6 +31,11 @@ export const messages = pgTable("messages",{
     channelId: uuid("channelId").notNull(),
     sender: uuid("sender").notNull().references(()=>user.id),
     message: text("message").notNull(),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+} , (table)=>{
+    return {
+        channelIdIndex: index("channelIdIndex").on(table.channelId, table.createdAt),
+    }
 })
 
 

@@ -13,6 +13,7 @@ declare module "next-auth" {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [Google],
+  trustHost: true,
   callbacks: {
     async signIn({ account, profile }) {
       if (
