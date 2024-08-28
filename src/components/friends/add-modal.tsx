@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { sendRequest } from "@/actions";
+import { sendRequest } from "@/actions/friends";
 import { Button } from "@nextui-org/button";
 
 export function AddFriendModal({setMode}:{setMode:React.Dispatch<React.SetStateAction<boolean>>}){

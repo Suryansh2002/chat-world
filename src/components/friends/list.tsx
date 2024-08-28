@@ -3,11 +3,11 @@ import { Avatar } from "@nextui-org/avatar";
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { Mode } from "@/lib/types";
-import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions";
 import { type FriendType } from "@/lib/types";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions/friends";
 
 const fetchFunctions = {
     Friends: fetchFriends,

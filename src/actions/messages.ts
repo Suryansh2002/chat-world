@@ -30,35 +30,3 @@ export const fetchMessages = authActionClient
         .orderBy(asc(messages.createdAt))
         .innerJoin(user, eq(messages.sender, user.id));
     })
-
-export const sendMessage = authActionClient
-    .schema(z.object({channelId: z.string(), message: z.string()}))
-    .action(async({parsedInput:{channelId, message},ctx:{session}})=>{
-        if (!session.dbUser){
-            redirect("/signup");
-        }
-        const friendship = await db.query.friendship.findFirst({
-            where: (friendship, {eq})=>eq(friendship.channelId, channelId)
-        });
-        if (!friendship){
-            return;
-        }
-        if (friendship.sender !== session.dbUser.id && friendship.receiver !== session.dbUser.id){
-            return;
-        }
-        if (friendship.status !== "accepted"){
-            return;
-        }
-        if (message.length === 0){
-            return;
-        }
-        if (message.length > 1000){
-            return;
-        }
-
-        await db.insert(messages).values({
-            channelId: channelId,
-            sender: session.dbUser.id,
-            message: message
-        })
-    })
