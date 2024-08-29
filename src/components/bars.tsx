@@ -7,6 +7,7 @@ import { cn } from "../lib/utils";
 const links = [
     {label:"friends", href:"/app/friends", icon:"/friends.svg" , className: "scale-125"},
     {label: "manage friends", href:"/app/manage-friends", icon:"/add-friends.svg" , className: "scale-75"},
+    {label: "settings", href:"/app/settings", icon:"/settings.svg" , className: "scale-100"},
 ]
 
 export function Links() {
@@ -19,7 +20,7 @@ export function Links() {
     }
     return links.map(link=>{
         return <Link href={link.href} key={link.href} className={cn("rounded-lg bg-neutral-600 hover:bg-neutral-500", {
-            "bg-neutral-500": pathname === link.href
+            "bg-neutral-400": pathname === link.href
         })}>
             <Image src={link.icon} alt={link.label} width={50} height={50} className={link.className}/>
         </Link>

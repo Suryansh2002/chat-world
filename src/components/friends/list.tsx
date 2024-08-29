@@ -4,9 +4,10 @@ import { useRef, useEffect, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { Mode } from "@/lib/types";
 import { type FriendType } from "@/lib/types";
-import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions/friends";
 
 const fetchFunctions = {
@@ -47,10 +48,23 @@ function CommonButton({
     return <Button className={`rounded-md w-10 scale-90 ${className || ""}`} onClick={handleClick}>{children}</Button>
 }
 
+function FriendAs({as, children, className, href, key}:{as: "div"|"link", children:React.ReactNode, className:string, href:string, key:string}) {
+    if (as === "div"){
+        return <div className={className}>
+            {children}
+        </div>
+    }
+    return <Link href={href} key={key} className={className}>
+        {children}
+    </Link>
+}
+
 
 function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, fetchCallback: Function, type: Mode, buttons: boolean }) {
     const successRef = useRef(false);
     const [message, setMessage] = useState("");
+    const as = usePathname().includes("/app/friends") ? "link" : "div";
+
     if (message) {
         let className = "";
         if (successRef.current) {
@@ -63,7 +77,7 @@ function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, 
         </div>
     }
 
-    return <Link href={`/app/friends/${friend.id}`} key={friend.id} className={`flex bg-neutral-900 p-1 rounded-md hover:bg-neutral-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
+    return <FriendAs as={as} href={`/app/friends/${friend.id}`} key={friend.id} className={`flex bg-neutral-900 p-1 rounded-md hover:bg-neutral-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
         <div className="flex gap-2 overflow-hidden">
             <Avatar src={friend.imageUrl} name={friend.displayName} className="scale-90" />
             <div className="flex-1 py-2 text-center overflow-hidden text-ellipsis md:text-sm">{friend.displayName}</div>
@@ -89,7 +103,7 @@ function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, 
                 Cancel
             </CommonButton>
         }
-    </Link>
+    </FriendAs>
 }
 
 export function FriendsList({ type = "Friends", className, buttons = true }: { className?: string, type?: Mode, buttons?: boolean }) {
