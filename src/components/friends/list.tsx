@@ -130,7 +130,7 @@ export function FriendsList({ type = "Friends", className, buttons = true }: { c
         fetchCallback();
     }, [type]);
 
-    return <div className={`h-full min-w-28 w-full bg-neutral-800 p-1 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
+    return <div className={`h-full min-w-28 w-full bg-neutral-800 p-1 gap-2 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
         {
             friends.map((friend) => <Friend key={friend.id} friend={friend} fetchCallback={fetchCallback} type={type} buttons={buttons} />)
         }

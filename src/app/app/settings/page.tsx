@@ -22,10 +22,10 @@ function Save({inputValue, updateSession}:{updateSession: UpdateSession, inputVa
     async function save(){
         const result = await updateUser(inputValue);
         if (result?.validationErrors?.fieldErrors.displayName){
-            alert("Display Name: "+result.validationErrors.fieldErrors.displayName);
+            return alert("Display Name: "+result.validationErrors.fieldErrors.displayName);
         }
         if (result?.validationErrors?.fieldErrors.userName){
-            alert("User Name: "+result.validationErrors.fieldErrors.userName);
+            return alert("User Name: "+result.validationErrors.fieldErrors.userName);
         }
         updateSession();
         alert("User updated successfully");

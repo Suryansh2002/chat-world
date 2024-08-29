@@ -26,7 +26,7 @@ export function AddFriendModal({setMode}:{setMode:React.Dispatch<React.SetStateA
 
 
     return <div className="absolute w-full h-full bg-black bg-opacity-70 flex items-center justify-center">
-        <div className="absolute bg-neutral-900 border-2 border-orange-400 w-1/2 h-1/4 rounded-2xl flex flex-col items-center p-4 gap-4 overflow-hidden">
+        <div className="absolute bg-neutral-900 border-2 border-orange-400 w-[90%] md:w-1/3 h-52 rounded-2xl flex flex-col items-center p-4 gap-4 overflow-hidden">
             <button className="absolute top-1 right-1 bg-red-500 w-7 h-7 rounded-lg border-2 border-red-400" onClick={()=>{setMode(false)}}>✕</button>
             <h1 className="text-2xl font-semibold self-center text-white">Add Friend</h1>
             <input ref={inputRef} className="border-2 border-neutral-700 rounded-md p-2 md:w-2/3" type="text" placeholder="Enter username" onChange={()=>setMessage("")}/>

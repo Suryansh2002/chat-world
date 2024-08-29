@@ -18,7 +18,7 @@ export default function Page(){
                         return <Button key={mode} onClick={()=>{
                             setMode(mode);
                             setAddFriendMode(false);
-                        }} className="bg-emerald-500 rounded-md w-full font-semibold text-small">{mode}</Button>
+                        }} className="bg-emerald-500 rounded-md flex-1 font-semibold text-small">{mode}</Button>
                     })
                 }
             </div>

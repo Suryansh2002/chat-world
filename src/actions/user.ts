@@ -7,7 +7,7 @@ import { db, user } from "@/db";
 import { eq } from "drizzle-orm";
 
 const createUserSchema = zfd.formData({
-    userName: zfd.text(z.string().min(5).max(20).regex(/^[a-z_]+$/, "Username must contain only lowercase letters and underscores")),
+    userName: zfd.text(z.string().min(5).max(20).regex(/^[a-z0-9_]+$/, "Username must contain only lowercase letters,numbers and underscores")),
     displayName: zfd.text(z.string().min(5).max(20)),
     gender: zfd.text(z.enum(["male","female","other"])),
 });
@@ -37,7 +37,7 @@ export const createUser = authActionClient
 export const updateUser = authActionClient
     .schema(z.object({
         displayName: z.string().min(5).max(20),
-        userName: z.string().min(5).max(20).regex(/^[a-z_]+$/, "Username must contain only lowercase letters and underscores")
+        userName: z.string().min(5).max(20).regex(/^[a-z0-9_]+$/, "Username must contain only lowercase letters,numbers and underscores")
     }))
     .action(async({parsedInput:{displayName,userName}, ctx:{session}})=>{
         if (!session.dbUser){
