@@ -1,27 +1,31 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { sendRequest } from "@/actions/friends";
 import { Button } from "@nextui-org/button";
+import { Spinner } from "@nextui-org/spinner";
 
 export function AddFriendModal({setMode}:{setMode:React.Dispatch<React.SetStateAction<boolean>>}){
     const colorRef = useRef("text-red-500");
     const inputRef = useRef<HTMLInputElement>(null);
     const [message, setMessage] = useState("");
+    const [isPending, startTransition] = useTransition();
 
     async function handleClick(){
-        colorRef.current = "text-red-500";
-        if (!inputRef.current){
-            setMessage("Please enter a username !");
-            return;
-        }
-        const result = await sendRequest({userName:inputRef.current.value});
-        if (result?.serverError){
-            setMessage(result.serverError);
-            return;
-        }
-        if (result?.data){
-            colorRef.current = "text-emerald-500";
-            setMessage(result.data);
-        }
+        startTransition(async()=>{
+            colorRef.current = "text-red-500";
+            if (!inputRef.current){
+                setMessage("Please enter a username !");
+                return;
+            }
+            const result = await sendRequest({userName:inputRef.current.value});
+            if (result?.serverError){
+                setMessage(result.serverError);
+                return;
+            }
+            if (result?.data){
+                colorRef.current = "text-emerald-500";
+                setMessage(result.data);
+            }
+        });
     }
 
 
@@ -31,7 +35,9 @@ export function AddFriendModal({setMode}:{setMode:React.Dispatch<React.SetStateA
             <h1 className="text-2xl font-semibold self-center text-white">Add Friend</h1>
             <input ref={inputRef} className="border-2 border-neutral-700 rounded-md p-2 md:w-2/3" type="text" placeholder="Enter username" onChange={()=>setMessage("")}/>
             <p className={`${colorRef.current} text-small`}>{message}</p>
-            <Button className="bg-blue-500 rounded-md self-center" onClick={handleClick}>Add</Button>
+            <Button className="bg-blue-500 rounded-md self-center" onClick={handleClick}>
+                {isPending ? <Spinner color="default" size="sm"/>: "Add"}
+            </Button>
         </div>
     </div>
 }

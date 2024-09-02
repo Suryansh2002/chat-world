@@ -1,6 +1,6 @@
 "use client"
 import { Avatar } from "@nextui-org/avatar";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useTransition } from "react";
 import { Button } from "@nextui-org/button";
 import { Mode } from "@/lib/types";
 import { type FriendType } from "@/lib/types";
@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions/friends";
 import { friendsStore } from "@/lib/store";
+import { Spinner } from "@nextui-org/spinner";
 
 const fetchFunctions = {
     Friends: fetchFriends,
@@ -34,28 +35,34 @@ function CommonButton({
         success: React.MutableRefObject<boolean>,
         className?: string 
     }) {
-    async function handleClick() {
-        const result = await action({ id });
-        if (result?.serverError) {
-            success.current = true
-            setMessage(result.serverError);
-        }
-        else if (result?.data) {
-            success.current = false
-            setMessage(result.data);
-        }
-        refetch(3);
+    const [isPending, startTransition] = useTransition();
+
+    function handleClick() {
+        startTransition(async() => {
+            const result = await action({ id });
+            if (result?.serverError) {
+                success.current = true
+                setMessage(result.serverError);
+            }
+            else if (result?.data) {
+                success.current = false
+                setMessage(result.data);
+            }
+            refetch(3);
+        });
     }
-    return <Button className={`rounded-md w-10 scale-90 ${className || ""}`} onClick={handleClick}>{children}</Button>
+    return <Button className={`rounded-md w-10 scale-90 ${className || ""}`} onClick={handleClick}>{
+        isPending ? <Spinner size="md" color="default"/> : children
+    }</Button>
 }
 
-function FriendAs({as, children, className, href, key}:{as: "div"|"link", children:React.ReactNode, className:string, href:string, key:string}) {
+function FriendAs({as, children, className, href, keys}:{as: "div"|"link", children:React.ReactNode, className:string, href:string, keys:string}) {
     if (as === "div"){
         return <div className={className}>
             {children}
         </div>
     }
-    return <Link href={href} key={key} className={className}>
+    return <Link href={href} key={keys} className={className}>
         {children}
     </Link>
 }
@@ -78,7 +85,7 @@ function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, 
         </div>
     }
 
-    return <FriendAs as={as} href={`/app/friends/${friend.id}`} key={friend.id} className={`flex bg-neutral-900 p-1 rounded-md hover:bg-neutral-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
+    return <FriendAs as={as} href={`/app/friends/${friend.id}`} keys={friend.id} className={`flex bg-neutral-900 p-1 rounded-md hover:bg-neutral-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
         <div className="flex gap-2 overflow-hidden">
             <Avatar src={friend.imageUrl} name={friend.displayName} className="scale-90" />
             <div className="flex-1 py-2 text-center overflow-hidden text-ellipsis md:text-sm">{friend.displayName}</div>
