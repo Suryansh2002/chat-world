@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions/friends";
+import { friendsStore } from "@/lib/store";
 
 const fetchFunctions = {
     Friends: fetchFriends,
@@ -111,9 +112,9 @@ export function FriendsList({ type = "Friends", className, buttons = true }: { c
     if ("id" in params) {
         className = cn(className, "hidden md:block");
     }
+    const { userRelations, setUserRelations } = friendsStore();
 
     const ref = useRef<Mode>(type);
-    const [friends, setFriends] = useState<FriendType[]>([]);
 
     const fetchCallback = async(delay?:number) => {
         await new Promise((resolve) => setTimeout(resolve, (delay || 0)*1000));
@@ -121,18 +122,17 @@ export function FriendsList({ type = "Friends", className, buttons = true }: { c
         if(ref.current !== type){
             return;
         }
-        setFriends(data?.data || []);
+        setUserRelations({ [type]: data?.data || [] });
     }
 
     useEffect(() => {
         ref.current = type;
-        setFriends([]);
         fetchCallback();
     }, [type]);
 
     return <div className={`h-full min-w-28 w-full bg-neutral-800 p-1 gap-2 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
         {
-            friends.map((friend) => <Friend key={friend.id} friend={friend} fetchCallback={fetchCallback} type={type} buttons={buttons} />)
+            userRelations[type].map((friend) => <Friend key={friend.id} friend={friend} fetchCallback={fetchCallback} type={type} buttons={buttons} />)
         }
     </div>
 }

@@ -2,11 +2,13 @@ import { fetchMessages } from "@/actions/messages";
 import { fetchChannelId } from "@/actions/friends";
 import { ShowMessages } from "@/components/chat/show-messages";
 import { SendMessage } from "@/components/chat/send-messages";
+import { Suspense } from "react";
+import { ChatSkeleton } from "@/components/chat/chat-skeleton";
 
-export default async function Page({params:{id}}:{params:{id:string}}){
+async function Chat({id}:{id:string}) {
     const channelId = (await fetchChannelId({friendId:id}))?.data;
     if (!channelId){
-        return <div></div>
+        return <ChatSkeleton/>
     }
     const messages = (await fetchMessages({channelId:channelId}))?.data || [];
 
@@ -14,4 +16,10 @@ export default async function Page({params:{id}}:{params:{id:string}}){
         <ShowMessages messages={messages} channelId={channelId} />
         <SendMessage channelId={channelId} />
     </div>
+}
+
+export default async function Page({params:{id}}:{params:{id:string}}){
+    return <Suspense fallback={<ChatSkeleton/>}>
+        <Chat id={id} />
+    </Suspense>
 }
