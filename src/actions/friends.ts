@@ -4,6 +4,7 @@ import { eq, or, and, ne} from "drizzle-orm";
 import { authActionClient } from "@/lib/safe-action";
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { fetchMessages } from "./messages";
 
 export const fetchFriends = authActionClient.action(
     async({ctx:{session}})=>{
@@ -81,6 +82,10 @@ export const sendRequest = authActionClient
         }
 
         const recieverId = reciever.id;
+
+        if (recieverId === senderId){
+            throw new Error("You can't send request to yourself !");
+        }
 
         const existingRelation = await db.query.friendship.findFirst({
             where: or(
@@ -228,3 +233,19 @@ export const fetchChannelId = authActionClient
         })
         return channelId?.channelId;
 })
+
+export const fetchFriendMessages = authActionClient
+    .schema(z.object({friendId: z.string()}))
+    .action(
+        async({parsedInput:{friendId}, ctx:{session}})=>{
+            if (!session.dbUser){
+                redirect("/signup");
+            }
+            const channelId = (await fetchChannelId({friendId:friendId}))?.data;
+            if (!channelId){
+                return { messages:[], channelId};
+            }
+            const messages =  (await fetchMessages({channelId:channelId}))?.data || [];
+            return {messages, channelId};
+        }
+    )

@@ -1,5 +1,5 @@
+'use client';
 import { Skeleton } from "@nextui-org/skeleton";
-import { getRndInteger } from "@/lib/utils";
 
 function ChatItem(){
     return (
@@ -7,7 +7,7 @@ function ChatItem(){
             <Skeleton className="flex rounded-full w-12 h-12 absolute"/>
             <div className="pl-14 py-1 flex flex-col gap-2 w-full">
                 {
-                    Array.from({length: getRndInteger(2, 3)}).map((_,i)=><Skeleton key={i} className="h-4 w-full rounded-lg"/>)
+                    Array.from({length:2}).map((_,i)=><Skeleton key={i} className="h-4 w-full rounded-lg"/>)
                 }
             </div>
         </div>
@@ -16,9 +16,11 @@ function ChatItem(){
 
 
 export function ChatSkeleton(){
-    return <div className="flex flex-col h-full w-full p-3 gap-4 overflow-x-hidden overflow-y-scroll">
-        {
-            Array.from({length: 10}).map((_,i)=><ChatItem key={i}/>)
-        }
+    return <div className="min-h-full w-full overflow-x-hidden overflow-y-scroll">
+        <div className="flex-col flex h-full w-full gap-4 bg-zinc-900 rounded-xl p-3">
+            {
+                Array.from({length: 10}).map((_,i)=><ChatItem key={i}/>)
+            }
+        </div>
     </div>;
 }

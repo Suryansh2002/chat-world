@@ -1,5 +1,5 @@
 "use client";
-import { FetchMessage } from "@/lib/types";
+import type { FetchMessage } from "@/lib/types";
 import { useRef, useEffect } from "react";
 import { Avatar } from "@nextui-org/avatar";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function ShowMessages({messages,channelId}:{messages:FetchMessage[], chan
         {
             stateFulMessages.map((message,index)=>{
                 const showExtra = index === 0 || stateFulMessages[index-1].senderId !== message.senderId;
-                return <div key={index} className="flex gap-1 p-1 rounded-md hover:bg-neutral-700 relative">
+                return <div key={index} className="flex gap-1 p-1 rounded-md hover:bg-zinc-700 relative">
                     {showExtra && <Avatar src={message.imageUrl} className="absolute self-center hover:scale-110 transition-all duration-700" as="button"/>}
                     <div className="pl-12 flex flex-col gap-1">
                         {

@@ -9,7 +9,7 @@ import { updateUser } from "@/actions/user";
 export default function Page(){
     const {data: session, status, update:updateSession} = useSession();
     return <div className="h-full w-full flex justify-center items-center">
-        <div className="h-5/6 w-5/6 md:w-2/3 bg-neutral-700 rounded-xl flex flex-col p-2">
+        <div className="h-5/6 w-5/6 md:w-2/3 bg-zinc-700 rounded-xl flex flex-col p-2">
         {
             (status === "authenticated" && session) ? <Contents session={session} updateSession={updateSession}/> : <></>
         }
@@ -31,7 +31,7 @@ function Save({inputValue, updateSession}:{updateSession: UpdateSession, inputVa
         alert("User updated successfully");
     }
     return <div className="flex justify-center w-full h-12">
-        <div className="w-full md:w-2/3 h-full opacity-80 bg-neutral-800 rounded-lg flex items-center justify-center">
+        <div className="w-full md:w-2/3 h-full opacity-80 bg-zinc-800 rounded-lg flex items-center justify-center">
             <Button className="w-24 bg-green-600" onClick={save}>SAVE</Button>
         </div>
     </div>

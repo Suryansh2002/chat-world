@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { FriendsList } from "@/components/friends/list";
 import { AddFriendModal } from "@/components/friends/add-modal";
-import { Mode, ModeList } from "@/lib/types";
+import type { Mode, ModeList } from "@/lib/types";
 
 export default function Page(){
     const [mode, setMode] = useState<Mode>("Friends");
@@ -11,14 +11,14 @@ export default function Page(){
     const modes:ModeList = ["Friends", "Incoming", "Outgoing"];
     
     return <div className="h-full w-full flex flex-col gap-4 items-center justify-center relative">
-        <div className="h-5/6 md:w-1/2 w-5/6 border-2 border-neutral-700 bg-gradient-to-b from-neutral-800 to-zinc-950 rounded-2xl flex flex-col p-4 gap-2">
+        <div className="h-5/6 md:w-1/2 w-5/6 border-2 border-zinc-700 bg-gradient-to-b from-zinc-800 to-zinc-950 rounded-2xl flex flex-col p-4 gap-2">
             <div className="flex justify-around gap-6">
                 {
-                    modes.map((mode)=>{
-                        return <Button key={mode} onClick={()=>{
-                            setMode(mode);
+                    modes.map((mode_item)=>{
+                        return <Button key={mode_item} onClick={()=>{
+                            setMode(mode_item);
                             setAddFriendMode(false);
-                        }} className="bg-emerald-500 rounded-md flex-1 font-semibold text-small">{mode}</Button>
+                        }} className={`${mode_item==mode?"bg-emerald-600":"bg-emerald-500"} rounded-md flex-1 font-semibold text-small`}>{mode_item}</Button>
                     })
                 }
             </div>

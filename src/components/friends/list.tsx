@@ -80,12 +80,12 @@ function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, 
         } else {
             className = "text-red-400 border-2 border-red-400";
         }
-        return <div className={`flex items-center justify-center bg-neutral-900 p-1 md:w-full w-[90%] rounded-md ${className}`}>
+        return <div className={`flex items-center justify-center bg-zinc-900 p-1 md:w-full w-[90%] rounded-md ${className}`}>
             {message}
         </div>
     }
 
-    return <FriendAs as={as} href={`/app/friends/${friend.id}`} keys={friend.id} className={`flex bg-neutral-900 p-1 rounded-md hover:bg-neutral-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
+    return <FriendAs as={as} href={`/app/friends/?id=${friend.id}`} keys={friend.id} className={`flex bg-zinc-900 p-1 rounded-md hover:bg-zinc-950 hover:rounded-lg md:w-full w-[90%] justify-between`}>
         <div className="flex gap-2 overflow-hidden">
             <Avatar src={friend.imageUrl} name={friend.displayName} className="scale-90" />
             <div className="flex-1 py-2 text-center overflow-hidden text-ellipsis md:text-sm">{friend.displayName}</div>
@@ -137,7 +137,7 @@ export function FriendsList({ type = "Friends", className, buttons = true }: { c
         fetchCallback();
     }, [type]);
 
-    return <div className={`h-full min-w-28 w-full bg-neutral-800 p-1 gap-2 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
+    return <div className={`h-full min-w-28 w-full bg-zinc-800 p-1 gap-2 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
         {
             userRelations[type].map((friend) => <Friend key={friend.id} friend={friend} fetchCallback={fetchCallback} type={type} buttons={buttons} />)
         }
