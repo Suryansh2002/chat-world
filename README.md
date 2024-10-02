@@ -19,6 +19,8 @@ Check About for live project link
 
 - Authentication is done with Google OAuth, using Next-auth(Auth.js)
 
+- Zustand for caching friends and messages data
+
 
 ## How to run
 

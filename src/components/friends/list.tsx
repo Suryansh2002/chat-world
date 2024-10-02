@@ -6,7 +6,7 @@ import { Mode } from "@/lib/types";
 import { type FriendType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { fetchFriends, fetchIncoming, fetchOutgoing, unfriend, acceptRequest, cancelRequest } from "@/actions/friends";
 import { friendsStore } from "@/lib/store";
@@ -115,8 +115,8 @@ function Friend({ friend, fetchCallback, type, buttons }: { friend: FriendType, 
 }
 
 export function FriendsList({ type = "Friends", className, buttons = true }: { className?: string, type?: Mode, buttons?: boolean }) {
-    const params = useParams();
-    if ("id" in params) {
+    const params = useSearchParams();
+    if (params.get("id")) {
         className = cn(className, "hidden md:block");
     }
     const { userRelations, setUserRelations } = friendsStore();
