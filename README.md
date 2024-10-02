@@ -1,5 +1,7 @@
 # HEY
 
+Check About for live project link
+
 ## Features
 
    - Sending Friends Requests and Accepting them
@@ -20,7 +22,7 @@
 
 ## How to run
 
-You can either use any package manager like npm, pnpm.
+You can any package manager like npm, pnpm.
 
 **Installing**
 
