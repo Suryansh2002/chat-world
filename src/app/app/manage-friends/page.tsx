@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FriendsList } from "@/components/friends/list";
 import { AddFriendModal } from "@/components/friends/add-modal";
 import type { Mode, ModeList } from "@/lib/types";
+import { Suspense } from "react";
 
 export default function Page(){
     const [mode, setMode] = useState<Mode>("Friends");
@@ -23,7 +24,9 @@ export default function Page(){
                 }
             </div>
             <hr className="w-full"/>
-            <FriendsList type={mode}/>
+            <Suspense fallback={<></>}>
+                <FriendsList type={mode}/>
+            </Suspense>
         </div>
         {mode=="Outgoing" && <Button className="bg-blue-500 rounded-md w-10 right-0 px-11 py-3" onClick={()=>setAddFriendMode(true)}>Add Friend</Button>}
         {addFriendMode && <AddFriendModal setMode={setAddFriendMode}/>}
