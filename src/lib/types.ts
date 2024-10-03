@@ -13,10 +13,13 @@ export interface ServerToClientEvents {
         imageUrl: string;
         channelId: string;
     }) => void;
+    typingPing: (who: string, channelId:string) => void;
 }
 
 export interface ClientToServerEvents {
     sendMessage: (channelId: string, message: string) => void;
+    sendTypingPing: (channelId: string) => void;
+    sendJoinChannel: (channelId: string) => void;
 }
 
 export interface InterServerEvents {}

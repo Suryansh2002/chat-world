@@ -38,7 +38,7 @@ function Main() {
         return <ChatSkeleton/>
     }
     
-    return <div className="flex flex-col h-full w-full bg-zinc-800 rounded-lg p-2 items-center overflow-hidden">
+    return <div className="flex flex-col h-full w-full bg-zinc-800 rounded-lg pb-2 items-center overflow-hidden">
         <ShowMessages messages={result.messages} channelId={result.channelId} />
         <SendMessage channelId={result.channelId} />
     </div>
@@ -46,7 +46,7 @@ function Main() {
 
 
 export default function Page(){
-    return <Suspense fallback={<></>}>
+    return <Suspense fallback={<ChatSkeleton/>}>
         <Main/>
     </Suspense>
 }

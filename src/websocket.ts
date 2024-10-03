@@ -62,4 +62,39 @@ async function handleAuthenticatedSocket(socket: ServerSocket, session:Session){
       })
     }
   })
+
+  socket.on("sendJoinChannel", async(channelId:string)=>{
+    if (!session.dbUser){
+      return;
+    }
+    const friendship = await db.query.friendship.findFirst({
+      where: (friendship, {eq})=>eq(friendship.channelId, channelId)
+    });
+    if (!friendship){
+      return;
+    }
+    if (friendship.sender !== session.dbUser.id && friendship.receiver !== session.dbUser.id){
+      return;
+    }
+    if (friendship.status !== "accepted"){
+      return;
+    }
+    socket.join(channelId);
+  })
+
+  socket.on("sendTypingPing", async(channelId:string)=>{
+    if (!session.dbUser){
+      return;
+    }
+    const friendship = await db.query.friendship.findFirst({
+      where: (friendship, {eq})=>eq(friendship.channelId, channelId)
+    });
+    if (!friendship){
+      return;
+    }
+    if (friendship.sender !== session.dbUser.id && friendship.receiver !== session.dbUser.id){
+      return;
+    }
+    socket.to(channelId).emit("typingPing", session.dbUser.displayName, channelId);
+  })
 }
