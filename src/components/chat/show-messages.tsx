@@ -2,7 +2,7 @@
 import type { FetchMessage } from "@/lib/types";
 import { useRef, useEffect } from "react";
 import { Avatar } from "@nextui-org/avatar";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { socket } from "@/app/socket";
 import { TypingMotion } from "../ui/typing-motion";
 
@@ -11,28 +11,33 @@ export function ShowMessages({messages,channelId}:{messages:FetchMessage[], chan
     const [typingWho, setTypingWho] = useState<string|null>();
     const timeout = useRef<NodeJS.Timeout|null>(null);
 
-    socket.on("message", (message)=>{
-        if (message.channelId !== channelId){
-            return;
+    const handleTypingPing = useCallback((who: string, socketChannelId: string) => {
+        if (channelId === socketChannelId) {
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+            }
+            setTypingWho(who);
+            timeout.current = setTimeout(() => {
+                setTypingWho(null);
+            }, 3000);
         }
-        setMessages([...stateFulMessages,message]);
-    });
+    }, [channelId]);
 
-    socket.emit("sendJoinChannel",channelId);
+    const handleNewMessage = useCallback((message: FetchMessage & {channelId:string}) => {
+        if (message.channelId === channelId) {
+            setMessages(prev => [...prev, message]);
+        }
+    }, [channelId]);
 
-    socket.on("typingPing", (who, socketChannelId)=>{
-        if (channelId !== socketChannelId){
-            return;
+    useEffect(()=>{
+        socket.emit("sendJoinChannel",channelId);
+        socket.on("typingPing",handleTypingPing);
+        socket.on("message", handleNewMessage);
+        return ()=>{
+            socket.off("typingPing",handleTypingPing);
+            socket.off("message", handleNewMessage);
         }
-        if (typingWho && timeout.current){
-            clearTimeout(timeout.current);
-            timeout.current = null;
-        }
-        setTypingWho(who);
-        timeout.current = setTimeout(()=>{
-            setTypingWho(null);
-        },3000);
-    });
+    },[channelId,handleTypingPing,handleNewMessage]);
 
     const messagesRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
