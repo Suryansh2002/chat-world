@@ -22,22 +22,22 @@ export function Links() {
         return <Link href={link.href} key={link.href} className={cn("rounded-lg bg-zinc-600 hover:bg-zinc-500", {
             "bg-zinc-400": pathname === link.href
         })}>
-            <Image src={link.icon} alt={link.label} width={50} height={50} className={link.className}/>
+            <Image src={link.icon} alt={link.label} width={50} height={50} className={link.className} priority/>
         </Link>
     })
 }
 
 export function Sidebar() {
-    return <div className="h-full w-16 bg-zinc-800 flex flex-col justify-around items-center rounded-lg">
+    return <aside className="h-full w-16 bg-zinc-800 flex flex-col justify-around items-center rounded-lg">
         <Links/>
-    </div>
+    </aside>
 }
 
 
 export function ButtonBar() {
-    return <div className="h-16 w-[100%] bg-zinc-800 flex items-center justify-around rounded-lg">
+    return <footer className="h-16 w-[100%] bg-zinc-800 flex items-center justify-around rounded-lg">
         <Links/>
-    </div>
+    </footer>
 }
 
 

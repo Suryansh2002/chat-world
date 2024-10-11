@@ -1,6 +1,6 @@
 "use client"
 import { Avatar } from "@nextui-org/avatar";
-import { useRef, useEffect, useState, useTransition } from "react";
+import { useRef, useEffect, useState, useTransition, useCallback } from "react";
 import { Button } from "@nextui-org/button";
 import { Mode } from "@/lib/types";
 import { type FriendType } from "@/lib/types";
@@ -121,21 +121,15 @@ export function FriendsList({ type = "Friends", className, buttons = true }: { c
     }
     const { userRelations, setUserRelations } = friendsStore();
 
-    const ref = useRef<Mode>(type);
-
-    const fetchCallback = async(delay?:number) => {
+    const fetchCallback = useCallback(async(delay?:number)=>{
         await new Promise((resolve) => setTimeout(resolve, (delay || 0)*1000));
         const data = await fetchFunctions[type]();
-        if(ref.current !== type){
-            return;
-        }
         setUserRelations({ [type]: data?.data || [] });
-    }
+    }, [type]);
 
     useEffect(() => {
-        ref.current = type;
         fetchCallback();
-    }, [type]);
+    }, [fetchCallback]);
 
     return <div className={`h-full min-w-28 w-full bg-zinc-800 p-1 gap-2 flex flex-col rounded-lg items-center overflow-y-auto scrollbar-hide ${className || ""}`}>
         {

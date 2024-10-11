@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { type Session } from "next-auth";
 
 export default async function middleware(request:NextRequest){
+  if (request.headers.get("next-action")){
+    return;
+  }
   const result = await fetch(`${process.env.NEXTAUTH_URL || request.nextUrl.origin}/api/auth/session`, {
     headers: {
       cookie: request.headers.get("cookie") || ""
@@ -30,5 +33,5 @@ export default async function middleware(request:NextRequest){
 }
 
 export const config = {
-  matcher: ['/((?!api/auth|_next/static|_next/image|.*\\.svg$).*)'],
+  matcher: ["/app/:path*", "/signup"],
 };
