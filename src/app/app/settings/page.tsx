@@ -110,8 +110,8 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
 
     return <>
         <div className="flex-1 flex lg:flex-row flex-col">
-            <div className="h-80 w-80 px-6 pt-10 relative">
-                <Avatar src={inputValue.imageUrl} name={session.dbUser?.displayName || ""} className="h-full w-full scale-90 md:scale-100" isBordered />
+            <div className="h-80 w-80 md:px-6 md:pt-10 relative">
+                <Avatar src={inputValue.imageUrl} name={session.dbUser?.displayName || ""} className="h-full w-full scale-85 md:scale-100" isBordered />
                 <EditButton className="absolute rounded-full z-10 bottom-1 right-1" onClick={()=>{document.getElementById("imageinput")?.click()}}/>
                 <input type="file" className="hidden" id="imageinput" accept="image/*" onChange={handleImageInput}/>
             </div>
@@ -121,7 +121,7 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
                     <div className="flex gap-1">
                         <input name="displayName" defaultValue={session.dbUser?.displayName || ""} 
                             disabled={whatsDisabled.displayName}
-                            className={`w-80 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
+                            className={`flex-1 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, userName: true})}}
                         />
@@ -133,7 +133,7 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
                     <div className="flex gap-1">
                         <input name="userName" defaultValue={session.dbUser?.userName || ""}
                             disabled={whatsDisabled.userName}
-                            className={`w-80 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
+                            className={`flex-1 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, displayName: true})}}
                         />
