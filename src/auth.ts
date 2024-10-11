@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { User } from "./db/schema";
+import type { User } from "./db/schema";
 import { db } from "./db";
 import { user } from "./db/schema";
 import { eq } from "drizzle-orm";

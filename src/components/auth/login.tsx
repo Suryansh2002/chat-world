@@ -3,13 +3,9 @@ import { Button } from "@nextui-org/button";
 import { Spinner } from "@nextui-org/spinner";
 import { LoginDropdown } from "./login-dropdown";
 import { useSession, signIn } from "next-auth/react";
-import { useEffect } from "react";
 
 export function Login(){
     const session = useSession();
-    useEffect(()=>{
-        session.update();
-    },[])
 
     if (session.status === "loading"){
         return <Spinner color="secondary"/>

@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
+    "file-type": "^19.5.0",
     "framer-motion": "^11.3.28",
     "next": "14.2.5",
     "next-auth": "5.0.0-beta.20",
