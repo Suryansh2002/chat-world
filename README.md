@@ -33,4 +33,22 @@ You can any package manager like npm, pnpm.
 **Running**
 
 - `pnpm dev` or `npm run dev`
+
+
+# Screenshots
+
+## Signup
+
+![signup](https://github.com/Suryansh2002/chat-world/blob/main/public/screenshots/signup.png?raw=true)
     
+## Chat
+
+![chat](https://github.com/Suryansh2002/chat-world/blob/main/public/screenshots/chat.png?raw=true)
+
+## Friends
+
+![friends](https://github.com/Suryansh2002/chat-world/blob/main/public/screenshots/manage-friends.png?raw=true)
+
+## Settings
+
+![settings](https://github.com/Suryansh2002/chat-world/blob/main/public/screenshots/settings.png?raw=true)
