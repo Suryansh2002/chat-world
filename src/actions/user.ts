@@ -38,7 +38,7 @@ export const createUser = authActionClient
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
-const UPLOAD_PATH = './public/uploads';
+const UPLOAD_PATH = './uploads';
 
 export const updateUser = authActionClient
     .schema(z.object({
@@ -82,7 +82,7 @@ export const updateUser = authActionClient
                 await fs.mkdir(UPLOAD_PATH);
             }
             await ensureUploadsFolder(UPLOAD_PATH);
-            await fs.writeFile(`./public/${fileUrl}`,buffer);
+            await fs.writeFile(`.${fileUrl}`,buffer);
             
             update.imageUrl = fileUrl;
             update.imageIsSet = true;
