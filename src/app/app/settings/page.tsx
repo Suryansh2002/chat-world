@@ -2,7 +2,7 @@
 import { useSession, type UpdateSession } from "next-auth/react";
 import { type Session } from "next-auth";
 import { Avatar } from "@nextui-org/avatar";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@nextui-org/button";
 import { updateUser } from "@/actions/user";
 import { EditButton } from "@/components/ui/edit-button";
@@ -108,12 +108,16 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
         setInputValue({...inputValue, [event.target.name]: event.target.value});
     }
 
+    const inputRef = useRef<HTMLInputElement>(null);
+
     return <>
         <div className="flex-1 flex lg:flex-row flex-col">
             <div className="h-80 w-80 md:px-6 md:pt-10 relative">
                 <Avatar src={inputValue.imageUrl} name={session.dbUser?.displayName || ""} className="h-full w-full scale-85 md:scale-100" isBordered />
-                <EditButton className="absolute rounded-full z-10 bottom-1 right-1" onClick={()=>{document.getElementById("imageinput")?.click()}}/>
-                <input type="file" className="hidden" id="imageinput" accept="image/*" onChange={handleImageInput}/>
+                <EditButton className="absolute rounded-full z-10 bottom-1 right-1" onClick={()=>{
+                    inputRef.current?.click();
+                }}/>
+                <input type="file" className="hidden" id="imageinput" accept="image/*" onChange={handleImageInput} ref={inputRef}/>
             </div>
             <div className="flex flex-col flex-1 justify-center items-center md:items-end gap-6 p-6">
                 <div className="flex flex-col gap-1">
@@ -121,7 +125,7 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
                     <div className="flex gap-1">
                         <input name="displayName" defaultValue={session.dbUser?.displayName || ""} 
                             disabled={whatsDisabled.displayName}
-                            className={`flex-1 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
+                            className={`w-56 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, userName: true})}}
                         />
@@ -133,7 +137,7 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
                     <div className="flex gap-1">
                         <input name="userName" defaultValue={session.dbUser?.userName || ""}
                             disabled={whatsDisabled.userName}
-                            className={`flex-1 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
+                            className={`w-56 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, displayName: true})}}
                         />
