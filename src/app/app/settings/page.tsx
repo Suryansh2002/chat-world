@@ -67,9 +67,7 @@ function Save({
         <div className="max-w-fit md:w-2/3 p-1 bg-zinc-800 rounded-xl flex items-center justify-center border-2 border-gray-600">
             <Button className="w-24 bg-green-600 border-2 border-gray-400 bg-opacity-70" onClick={()=>{
                 save().then(()=>{
-                    setTimeout(()=>{
-                        updateSession();
-                    }, 5000);
+                    setTimeout(updateSession, 3000);
                 })
             }}>SAVE</Button>
         </div>

@@ -28,26 +28,18 @@ export function Links() {
 }
 
 export function Sidebar() {
-    return <aside className="h-full w-16 bg-zinc-800 flex flex-col justify-around items-center rounded-lg">
-        <Links/>
-    </aside>
+    return <div className="hidden md:block">
+        <aside className="h-full w-16 bg-zinc-800 flex flex-col justify-around items-center rounded-lg">
+            <Links/>
+        </aside>
+    </div>
 }
 
 
-export function ButtonBar() {
-    return <footer className="h-16 w-[100%] bg-zinc-800 flex items-center justify-around rounded-lg">
-        <Links/>
-    </footer>
-}
-
-
-export function Bar() {
-    return <>
-        <div className="hidden md:block">
-            <Sidebar/>
-        </div>
-        <div className="block md:hidden">
-            <ButtonBar/>
-        </div>
-    </>
+export function Bottombar() {
+    return <div className="block md:hidden">
+        <footer className="h-16 w-[100%] bg-zinc-800 flex items-center justify-around rounded-lg">
+            <Links/>
+        </footer>
+    </div>
 }
