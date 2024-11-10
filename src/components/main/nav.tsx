@@ -1,6 +1,6 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/navbar";
-import { Login } from "./auth/login";
+import { Login } from "../auth/login";
 
 export async function MainNavbar() {
   return (
