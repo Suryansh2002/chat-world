@@ -36,7 +36,6 @@ function Save({
         setLoading(true);
         const result = await updateUser(inputValue);
         setLoading(false);
-        console.log(result);
         if (result?.validationErrors?.fieldErrors.displayName){
             return setResult({message:"Display Name: "+result.validationErrors.fieldErrors.displayName, type:"error"});
         }

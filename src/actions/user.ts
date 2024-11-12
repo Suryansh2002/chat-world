@@ -90,3 +90,27 @@ export const updateUser = authActionClient
 
         await db.update(user).set(update).where(eq(user.id,session.dbUser.id));
     });
+
+export const registerPushSubscription = authActionClient
+    .schema(z.object({
+        subscription: z.string()
+    }))
+    .action(async({parsedInput:{subscription},ctx:{session}})=>{
+        if (!session.dbUser){
+            redirect("/signup")
+        }
+        
+        const newSubscription = JSON.parse(subscription);
+        const parsedSubscriptions = JSON.parse(session.dbUser.subscriptions);
+        
+        for (const sub of parsedSubscriptions){
+            if (sub.endpoint === newSubscription.endpoint){
+                return;
+            }
+        }
+        parsedSubscriptions.push(newSubscription);
+
+        await db.update(user).set({
+            subscriptions:JSON.stringify(parsedSubscriptions)
+        }).where(eq(user.id,session.dbUser.id));
+    });

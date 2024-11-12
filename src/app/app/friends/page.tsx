@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import type { FetchMessage } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { usePushClient } from "@/lib/push-client";
 
 function Main() {
     const [searchId, setId] = useState<string|null>(null);
@@ -46,6 +47,7 @@ function Main() {
 
 
 export default function Page(){
+    usePushClient();
     return <Suspense fallback={<ChatSkeleton/>}>
         <Main/>
     </Suspense>

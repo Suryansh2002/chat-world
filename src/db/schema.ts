@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, pgEnum, index, timestamp, time} from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, boolean, pgEnum, index, timestamp, json} from "drizzle-orm/pg-core";
 
 
 export const friendshipStatus = pgEnum("friendshipStatus",["pending","accepted","blocked","none"])
@@ -12,6 +12,7 @@ export const user = pgTable("user",{
     gender: genderEnum("gender").notNull(),
     imageUrl : text("imageUrl").notNull().default(""),
     imageIsSet: boolean("imageIsSet").notNull().default(false),
+    subscriptions: text("subscriptions").notNull().default("[]"),
 })
 
 export const friendship = pgTable("friendship",{
