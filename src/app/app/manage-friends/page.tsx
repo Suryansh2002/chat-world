@@ -19,7 +19,7 @@ export default function Page(){
                         return <Button key={mode_item} onClick={()=>{
                             setMode(mode_item);
                             setAddFriendMode(false);
-                        }} className={`${mode_item==mode?"bg-emerald-600":"bg-emerald-500"} rounded-md flex-1 font-semibold text-small`}>{mode_item}</Button>
+                        }} className={`${mode_item==mode?"bg-emerald-600":"bg-emerald-500"} rounded-md flex-1 font-semibold text-small p-0`}>{mode_item}</Button>
                     })
                 }
             </div>

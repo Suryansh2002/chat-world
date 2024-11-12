@@ -14,6 +14,11 @@ interface FriendsStore {
     }) => void
 }
 
+interface CallStore {
+    callType: "call"|"videoCall"|null,
+    setCallType: (callType:"call"|"videoCall"|null)=>void
+}
+
 export const friendsStore = create<FriendsStore>((set)=>({
     userRelations: {
         Friends: [], 
@@ -24,4 +29,11 @@ export const friendsStore = create<FriendsStore>((set)=>({
         set((state) => ({
           userRelations: { ...state.userRelations, ...newState },
         })),
+}))
+
+export const callStore = create<CallStore>((set)=>({
+    callType:null,
+    setCallType:(callType)=>{
+        set({callType})
+    }
 }))

@@ -1,43 +1,11 @@
 "use client";
 import type { FetchMessage } from "@/lib/types";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/avatar";
-import { useState, useCallback } from "react";
-import { socket } from "@/app/socket";
-import { TypingMotion } from "../ui/typing-motion";
+import { useStateFulMessages } from "@/components/chat/chat-hook";
 
 export function ShowMessages({messages,channelId}:{messages:FetchMessage[], channelId:string}){
-    const [stateFulMessages, setMessages] = useState(messages);
-    const [typingWho, setTypingWho] = useState<string|null>();
-    const timeout = useRef<NodeJS.Timeout|null>(null);
-
-    const handleTypingPing = useCallback((who: string, socketChannelId: string) => {
-        if (channelId === socketChannelId) {
-            if (timeout.current) {
-                clearTimeout(timeout.current);
-            }
-            setTypingWho(who);
-            timeout.current = setTimeout(() => {
-                setTypingWho(null);
-            }, 3000);
-        }
-    }, [channelId]);
-
-    const handleNewMessage = useCallback((message: FetchMessage & {channelId:string}) => {
-        if (message.channelId === channelId) {
-            setMessages(prev => [...prev, message]);
-        }
-    }, [channelId]);
-
-    useEffect(()=>{
-        socket.emit("sendJoinChannel",channelId);
-        socket.on("typingPing",handleTypingPing);
-        socket.on("message", handleNewMessage);
-        return ()=>{
-            socket.off("typingPing",handleTypingPing);
-            socket.off("message", handleNewMessage);
-        }
-    },[channelId,handleTypingPing,handleNewMessage]);
+    const stateFulMessages = useStateFulMessages(messages, channelId);
 
     const messagesRef = useRef<HTMLDivElement>(null);
     useEffect(()=>{
@@ -47,11 +15,6 @@ export function ShowMessages({messages,channelId}:{messages:FetchMessage[], chan
     },[stateFulMessages]);
 
     return <div className="overflow-x-hidden overflow-y-scroll scrollbar-hide flex-1 pb-1 gap-2 w-full" ref={messagesRef}>
-        <div className="w-full h-10 bg-neutral-900 bg-opacity-80 flex justify-between p-2">
-            {
-                typingWho ? <div className="text-white text-xs font-bold px-1">{typingWho} is Typing<TypingMotion/> </div> : <></>
-            }
-        </div>
         {
             stateFulMessages.map((message,index)=>{
                 const showExtra = index === 0 || stateFulMessages[index-1].senderId !== message.senderId;
