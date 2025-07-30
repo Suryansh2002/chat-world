@@ -6,11 +6,11 @@ function isNotificationSupported() {
 }
 
 async function enablePushNotifications() {
-    const registration = await navigator.serviceWorker.register("/service-worker.js");
     const permission = await Notification.requestPermission();
     if (permission !== "granted"){
         return;
     }
+    const registration = await navigator.serviceWorker.register("/service-worker.js");
     const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: process.env.NEXT_PUBLIC_VAPID_KEY
