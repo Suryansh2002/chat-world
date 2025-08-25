@@ -1,13 +1,18 @@
 "use client";
 import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "../lib/utils";
+import { LiaUserFriendsSolid } from "react-icons/lia";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { GiRadarSweep } from "react-icons/gi";
+
 
 const links = [
-    {label:"friends", href:"/app/friends", icon:"/friends.svg" , className: "scale-125"},
-    {label: "manage friends", href:"/app/manage-friends", icon:"/add-friends.svg" , className: "scale-75"},
-    {label: "settings", href:"/app/settings", icon:"/settings.svg" , className: "scale-100"},
+    {label:"friends", href:"/app/friends", icon:<LiaUserFriendsSolid className="h-12 w-12 p-2"/>},
+    {label: "nearby", href:"/app/nearby", icon: <GiRadarSweep className="h-12 w-12 p-2"/>},
+    {label: "manage friends", href:"/app/manage-friends", icon: <IoPersonAddOutline className="h-12 w-12 p-2"/>},
+    {label: "settings", href:"/app/settings", icon: <IoSettingsOutline className="h-12 w-12 p-2"/>},
 ]
 
 export function Links() {
@@ -20,9 +25,9 @@ export function Links() {
     }
     return links.map(link=>{
         return <Link href={link.href} key={link.href} className={cn("rounded-lg bg-zinc-600 hover:bg-zinc-500", {
-            "bg-zinc-400": pathname === link.href
+            "bg-zinc-400 bg-opacity-70": pathname === link.href
         })}>
-            <Image src={link.icon} alt={link.label} width={50} height={50} className={link.className} priority/>
+            {link.icon}
         </Link>
     })
 }

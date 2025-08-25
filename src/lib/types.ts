@@ -18,8 +18,11 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
     sendMessage: (channelId: string, message: string) => void;
+    sendGlobalMessage: (message: string) => void;
     sendTypingPing: (channelId: string) => void;
+    sendGlobalTypingPing: () => void;
     sendJoinChannel: (channelId: string) => void;
+    sendLocation: (location: { latitude: number; longitude: number }) => void;
 }
 
 export interface InterServerEvents {}

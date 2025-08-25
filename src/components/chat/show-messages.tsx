@@ -30,7 +30,7 @@ export function ShowMessages({messages,channelId}:{messages:FetchMessage[], chan
     }, [channelId]);
 
     useEffect(()=>{
-        socket.emit("sendJoinChannel",channelId);
+        channelId != "global" && socket.emit("sendJoinChannel",channelId);
         socket.on("typingPing",handleTypingPing);
         socket.on("message", handleNewMessage);
         return ()=>{
@@ -67,4 +67,8 @@ export function ShowMessages({messages,channelId}:{messages:FetchMessage[], chan
             })
         }
     </div>
+}
+
+export function ShowGlobalMessages(){
+    return <ShowMessages messages={[]} channelId="global" />
 }

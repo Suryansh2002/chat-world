@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 
-const buttonClass =" bg-gradient-to-br from-red-500 to-pink-500 m-6 hover:h-14 hover:w-28 transition transform hover:scale-95 duration-1000";
+const buttonClass =" bg-gradient-to-br from-red-500 to-pink-500 m-6 transition transform hover:scale-95 duration-1000";
 
 export function Enter(){
     const session = useSession();

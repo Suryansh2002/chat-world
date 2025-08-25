@@ -1,6 +1,7 @@
 import { type Session } from "next-auth";
 import { IOServer, ServerSocket  } from "../lib/types";
 import { handleMessages } from "./messages";
+import { handleGlobalMessages } from "./global-messages";
 
 export function setSocket(io:IOServer){
     io.on("connection", socket=>handleSocket(io,socket));
@@ -19,5 +20,6 @@ export async function handleSocket(io:IOServer, socket: ServerSocket) {
     if (session.dbUser){
       socket.join(session.dbUser.id);
       handleMessages(io, socket, session);
+      handleGlobalMessages(io, socket, session);
     }
 };
