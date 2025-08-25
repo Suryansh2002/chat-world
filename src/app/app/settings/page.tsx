@@ -11,7 +11,7 @@ import { Spinner } from "@nextui-org/spinner";
 export default function Page(){
     const {data: session, status, update:updateSession} = useSession();
     return <div className="h-full w-full flex justify-center items-center">
-        <div className="h-5/6 w-5/6 md:w-2/3 bg-zinc-700 rounded-xl flex flex-col p-2">
+        <div className="h-5/6 w-5/6 md:w-2/3 bg-zinc-700 rounded-xl flex flex-col md:p-2">
         {
             (status === "authenticated" && session) ? <Contents session={session} updateSession={updateSession}/> : <></>
         }
@@ -63,8 +63,8 @@ function Save({
         </div>
     }
     return <div className="flex justify-center w-full">
-        <div className="max-w-fit md:w-2/3 p-1 bg-zinc-800 rounded-xl flex items-center justify-center border-2 border-gray-600">
-            <Button className="w-24 bg-green-600 border-2 border-gray-400 bg-opacity-70" onClick={()=>{
+        <div className="max-w-fit md:w-2/3 p-1 bg-zinc-800 rounded-2xl flex items-center justify-center border-2 border-gray-600">
+            <Button className="w-24 bg-green-500 border-2 border-gray-400 bg-opacity-70" onClick={()=>{
                 save().then(()=>{
                     setTimeout(updateSession, 3000);
                 })
@@ -109,20 +109,20 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
 
     return <>
         <div className="flex-1 flex lg:flex-row flex-col">
-            <div className="h-80 w-80 md:px-6 md:pt-10 relative">
+            <div className="h-64 w-64 scale-90 sm:scale-110 md:px-6 md:pt-10 relative">
                 <Avatar src={inputValue.imageUrl} name={session.dbUser?.displayName || ""} className="h-full w-full scale-85 md:scale-100" isBordered />
                 <EditButton className="absolute rounded-full z-10 bottom-1 right-1" onClick={()=>{
                     inputRef.current?.click();
                 }}/>
                 <input type="file" className="hidden" id="imageinput" accept="image/*" onChange={handleImageInput} ref={inputRef}/>
             </div>
-            <div className="flex flex-col flex-1 justify-center items-center md:items-end gap-6 p-6">
+            <div className="flex flex-col flex-1 justify-center items-center md:items-end md:gap-6 md:p-6 gap-2 p-1">
                 <div className="flex flex-col gap-1">
                     <label htmlFor="displayName" className="font-semibold text-xs text-gray-300">DISPLAY NAME</label>
                     <div className="flex gap-1">
                         <input name="displayName" defaultValue={session.dbUser?.displayName || ""} 
                             disabled={whatsDisabled.displayName}
-                            className={`w-56 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
+                            className={`w-48 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.displayName ? "bg-zinc-800" : "bg-zinc-900"}`} 
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, userName: true})}}
                         />
@@ -134,7 +134,7 @@ function Contents({session, updateSession}:{session: Session, updateSession: Upd
                     <div className="flex gap-1">
                         <input name="userName" defaultValue={session.dbUser?.userName || ""}
                             disabled={whatsDisabled.userName}
-                            className={`w-56 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
+                            className={`w-48 sm:w-64 md:w-96 h-10 p-1 px-3 rounded-md text-lg ${whatsDisabled.userName ? "bg-zinc-800" : "bg-zinc-900"}`}
                             onChange={handleChange}
                             onFocus={()=>{setWhatsDisabled({...whatsDisabled, displayName: true})}}
                         />
